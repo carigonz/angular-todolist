@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<!--[if lt IE 7]>      <html lang="en" ng-app="todoList" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="todoList" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="todoList" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="todoList" class="no-js"> <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="lib/html5-boilerplate/dist/css/normalize.css">
   <link rel="stylesheet" href="lib/html5-boilerplate/dist/css/main.css">
   <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  
   <script src="lib/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
 <body>
@@ -25,8 +27,60 @@
   <![endif]-->
 
   <div ng-view></div>
+  <div ng-controller="TodoController">
+    <section class="container">
+      <div class="list">
+        <ul>
+          <li ng-repeat='item in todo'>
+            <div >
+              <div ng-hide="editorEnabled">
+                  {{item.description}}
+                <a href="#" ng-click="enableEditor($index)">Edit title</a>
+              </div>
+              <div ng-show="editorEnabled">
+                <input type='text' ng-model="editableTitle" ng-show="editorEnabled">
+                <a href="#" ng-click="save($index)">Save</a>
+                or
+                <a href="#" ng-click="disableEditor()">cancel</a>.
+              </div>
+            </div>
 
-  <div>AngularJS seed app: v<span app-version></span></div>
+
+            <button type="button" ng-click="deleteTodo($index)" class="btn btn-danger" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+                DONE ;)
+            </button>
+            {{count}}
+
+
+
+
+
+          </li>
+        </ul>
+      </div>
+      <div class="input-container">
+        <form action="" ng-submit="addTodo()">
+          <label for="input">To do List</label>
+          <pre>Model: {{newTodo.description | json}}</pre>
+          <input type="text" ng-model="newTodo.description" uib-typeahead="state for state in states | filter:$viewValue | limitTo:8" class="form-control">
+
+
+          
+          
+          <button type="submit"  class="btn btn-primary" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+            Add to do!
+          </button>
+        </form>
+      </div>
+    </section>
+  </div>
+  
+  
+  <div ng-app>
+    </div>
+
+
+  <!-- <div>AngularJS seed app: v<span app-version></span></div> -->
 
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
@@ -36,6 +90,7 @@
   <script src="app.js"></script>
   <script src="view1/view1.js"></script>
   <script src="view2/view2.js"></script>
+  <script src="lib/angular-local-storage/dist/angular-local-storage.min.js"></script>
   <script src="core/version/version.js"></script>
   <script src="core/version/version-directive.js"></script>
   <script src="core/version/interpolate-filter.js"></script>
